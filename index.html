@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Loops</title>
+<!--BUILD:HEAD-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<!--/BUILD:HEAD-->
+</head>
+<body>
+<!--BUILD:BODY-->
+<a class="skip" href="#view">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#home" data-brand>Little Loops</a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <div class="nav-item has-sub">
+        <a href="#products" data-nav="products">Products</a>
+        <div class="sub">
+          <a href="#toys" data-nav="toys">Toys</a>
+          <a href="#keychains" data-nav="keychains">Keychains</a>
+          <a href="#bag-charms" data-nav="bag-charms">Bag charms</a>
+        </div>
+      </div>
+      <a href="#learn" data-nav="learn">Learn</a>
+      <a href="#order" data-nav="order">How to Order</a>
+      <a href="#about" data-nav="about">About</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="view" tabindex="-1"></main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="#home" data-brand>Little Loops</a>
+      <p class="muted" data-tagline></p>
+    </div>
+    <nav aria-label="Footer" class="footer-links">
+      <div>
+        <a href="#products">Products</a>
+        <a href="#toys">Toys</a>
+        <a href="#keychains">Keychains</a>
+        <a href="#bag-charms">Bag charms</a>
+      </div>
+      <div>
+        <a href="#learn">Learn</a>
+        <a href="#order">How to Order</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+    <div>
+      <p class="label">Follow along</p>
+      <a class="ig-link" data-ig href="#contact" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+  <div class="wrap fine">
+    <span>© <span data-year></span> <span data-shop></span>. Every piece handmade to order.</span>
+  </div>
+</footer>
+
+<script src="data/site.js"></script>
+<script src="data/products.js"></script>
+<script src="data/learn.js"></script>
+<script src="assets/app.js"></script>
+<!--/BUILD:BODY-->
+</body>
+</html>
