@@ -246,7 +246,17 @@
     });
     function pause() { hero.classList.add("is-paused"); }
     function play() { hero.classList.remove("is-paused"); }
-    hero.addEventListener("mouseenter", pause); hero.addEventListener("mouseleave", play);
+    hero.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") pause(); });
+    hero.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") play(); });
+    // Swipe left or right on phones and tablets
+    var x0 = null, swiped = false;
+    hero.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; swiped = false; }, { passive: true });
+    hero.addEventListener("touchend", function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { swiped = true; go(i + (dx < 0 ? 1 : -1)); }
+    });
+    hero.addEventListener("click", function (e) { if (swiped) { e.preventDefault(); swiped = false; } }, true);
     sliderCleanup = function () { hero.removeEventListener("animationend", onEnd); };
   }
 
