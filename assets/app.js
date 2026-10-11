@@ -48,7 +48,7 @@
       slides.map(function (p, i) {
         return '<a class="slide' + (i === 0 ? " is-active" : "") + '" href="#item-' + esc(p.id) + '" aria-hidden="' + (i ? "true" : "false") + '"' + (i ? ' tabindex="-1"' : "") + '>' +
           '<span class="slide-bg" style="background-image:url(\'' + esc(photo(p)) + '\')"></span>' +
-          '<img class="slide-photo" src="' + esc(photo(p)) + '" alt="' + esc(p.name) + '">' +
+          '<img class="slide-photo" draggable="false" src="' + esc(photo(p)) + '" alt="' + esc(p.name) + '">' +
           '<span class="slide-cap"><span class="eyebrow">' + esc(catLabel(p.category)) + '</span><span class="slide-name">' + esc(p.name) + "</span></span></a>";
       }).join("") +
       '<div class="hero-ctrl" role="tablist" aria-label="Choose a slide">' +
@@ -249,14 +249,27 @@
     hero.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") pause(); });
     hero.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") play(); });
     // Swipe left or right on phones and tablets
-    var x0 = null, swiped = false;
-    hero.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; swiped = false; }, { passive: true });
-    hero.addEventListener("touchend", function (e) {
-      if (x0 === null) return;
-      var dx = e.changedTouches[0].clientX - x0; x0 = null;
-      if (Math.abs(dx) > 40) { swiped = true; go(i + (dx < 0 ? 1 : -1)); }
-    });
-    hero.addEventListener("click", function (e) { if (swiped) { e.preventDefault(); swiped = false; } }, true);
+    var sx = null, sy = 0, lx = 0, horiz = false, swiped = false;
+    function swipeStart(x, y) { sx = x; sy = y; lx = x; horiz = false; swiped = false; }
+    function swipeEnd() {
+      if (sx === null) return;
+      var dx = lx - sx; sx = null;
+      if (Math.abs(dx) > 35) { swiped = true; go(i + (dx < 0 ? 1 : -1)); setTimeout(function () { swiped = false; }, 400); }
+    }
+    hero.addEventListener("touchstart", function (e) { var t = e.touches[0]; swipeStart(t.clientX, t.clientY); }, { passive: true });
+    hero.addEventListener("touchmove", function (e) {
+      if (sx === null) return;
+      var t = e.touches[0]; lx = t.clientX;
+      if (!horiz && Math.abs(t.clientX - sx) > 8 && Math.abs(t.clientX - sx) > Math.abs(t.clientY - sy)) horiz = true;
+      if (horiz && e.cancelable) e.preventDefault(); // keep the page from scrolling sideways while swiping
+    }, { passive: false });
+    hero.addEventListener("touchend", swipeEnd);
+    hero.addEventListener("touchcancel", swipeEnd);
+    // Mouse and pen drags too
+    hero.addEventListener("pointerdown", function (e) { if (e.pointerType !== "touch") swipeStart(e.clientX, e.clientY); });
+    hero.addEventListener("pointermove", function (e) { if (e.pointerType !== "touch" && sx !== null) lx = e.clientX; });
+    hero.addEventListener("pointerup", function (e) { if (e.pointerType !== "touch") swipeEnd(); });
+    hero.addEventListener("click", function (e) { if (swiped) { e.preventDefault(); e.stopPropagation(); } }, true);
     sliderCleanup = function () { hero.removeEventListener("animationend", onEnd); };
   }
 
